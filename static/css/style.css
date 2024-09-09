@@ -1,0 +1,242 @@
+*, * ::before, * ::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Didot", sans-serif;
+  background-color: black;
+}
+
+body.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+  background-color: black;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 2;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  background-color: #212121;
+  z-index: 2;
+  opacity: 0.9;
+}
+
+.header__body {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+}
+
+@keyframes dropDown {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.header__logo {
+  flex: 0 0 70px;
+  position: relative;
+  z-index: 3;
+  animation: dropDown 0.3s ease-out 0s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  left: 2%;
+}
+.header__logo img {
+  max-width: 100%;
+  display: block;
+}
+
+.header__burger {
+  display: none;
+}
+.header__burger .span2 {
+  background-color: #FF4545;
+}
+
+.header__menu {
+  padding-right: 5%;
+}
+
+.header__list {
+  display: flex;
+  position: relative;
+  z-index: 2;
+}
+.header__list li {
+  list-style: none;
+  margin: 0 0 0 20px;
+}
+.header__list a {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #f4f4f4;
+  text-decoration: none;
+}
+
+.header__link {
+  color: #f4f4f4;
+  text-decoration: none;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 768px) {
+  body.lock {
+    overflow: hidden;
+  }
+  .header__body {
+    height: 70px;
+  }
+  .header__logo {
+    flex: 0 0 49px;
+  }
+  .header__burger {
+    display: block;
+    position: relative;
+    width: 30px;
+    height: 20px;
+    position: relative;
+    z-index: 3;
+  }
+  .header__burger span {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    left: 0;
+    transition: all 0.3s ease 0s;
+    top: 9px;
+  }
+  .header__burger::before {
+    content: "";
+    position: absolute;
+    background-color: #f4f4f4;
+    height: 2px;
+    left: 0;
+    width: 100%;
+    transition: all 0.3s ease 0s;
+  }
+  .header__burger::after {
+    content: "";
+    position: absolute;
+    background-color: #f4f4f4;
+    height: 2px;
+    left: 0;
+    width: 100%;
+    transition: all 0.3s ease 0s;
+  }
+  .header__burger::before {
+    top: 0;
+  }
+  .header__burger::after {
+    bottom: 0;
+  }
+  .header__burger.active::before {
+    transform: rotate(45deg);
+    background-color: #BF00FF;
+    top: 9px;
+  }
+  .header__burger.active::after {
+    transform: rotate(-45deg);
+    background-color: #FFFF00;
+    bottom: 9px;
+  }
+  .header__burger.active span {
+    transform: rotate3d(0, 1, 0, 90deg);
+  }
+  .header__menu {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    transition: all 0.3s ease 0s;
+    background-color: black;
+    padding-top: 110px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+  }
+  .header__menu.active {
+    top: 0;
+  }
+  .header__list {
+    display: block;
+    text-align: center;
+  }
+  .header__list li {
+    margin: 0 0 20px 0;
+  }
+}
+.content {
+  min-height: 100vh;
+  height: 100%;
+  padding-top: 120px;
+  background-color: black;
+  color: #f4f4f4;
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    padding-top: 90px;
+  }
+}
+.footer {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  padding: 10px 0 10px 0;
+  background-color: #909090;
+}
+
+.footer__body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer__text {
+  font-size: 1rem;
+  color: #f4f4f4;
+  text-align: center;
+}

@@ -1,0 +1,8 @@
+# Use official Nginx image from Docker Hub
+FROM nginx:alpine
+
+# Copy custom Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy your static files (if you're going to serve them via Nginx)
+COPY static/ /static/

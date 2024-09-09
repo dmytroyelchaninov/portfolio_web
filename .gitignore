@@ -1,0 +1,60 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Temporary files
+.Spotlight-V100
+.Trashes
+*.swp
+*.lock
+*.log
+*.tmp
+*.pid
+
+# macOS folder attributes
+Icon?
+._*
+
+# Files related to trash
+.DS_Store?
+
+# Node.js specific
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python specific
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.env
+*.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Flask cache
+instance/
+*.db
+*.sqlite3
+
+# Gulp specific
+.dist/
+build/
+
+# JetBrains IDEs (if using)
+.idea​⬤
+
+__pycache__/
+
+src/
+package.json
+package-lock.json
+gulpfile.js

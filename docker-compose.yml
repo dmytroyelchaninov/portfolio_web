@@ -1,0 +1,27 @@
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask-app
+    restart: always
+    volumes:
+      - ./static:/app/static
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_APP: darts.app
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - flask-app
+    volumes:
+      - ./static:/static
+      - ./certs:/etc/letsencrypt
