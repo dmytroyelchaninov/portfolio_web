@@ -9,14 +9,6 @@ $(document).ready(function() {
     }
     logoSrc = `images/logo/${currentImage}.jpg`;
 
-    // let logoSrc;
-
-    // if (window.location.pathname.includes('game')) {
-    //     logoSrc = `../../static/images/logo/${currentImage}.jpg`;
-    // } else {
-    //     logoSrc = `images/logo/${currentImage}.jpg`;
-    // }
-
     $('#logo').attr('src', logoSrc);
     localStorage.setItem('currentLogo', currentImage);
 
@@ -34,17 +26,17 @@ $(document).ready(function() {
         });
     }, 100);
 
-    $('#logo').on('click', function(event) {
+    $('#logo, #game_link').on('click', function(event) {
         event.preventDefault();
         const link = $(this).closest('a').attr('href');
-
-        $(this).css({
+                
+        $('#logo').css({
             'transform': 'translateY(100vh)',
             'transition': 'transform 0.5s ease-out'
         });
-
+    
         $('body').addClass('fade-out');
-
+    
         setTimeout(function() {
             window.location.href = link;
         }, 420);

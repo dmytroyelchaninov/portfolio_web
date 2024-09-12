@@ -1,11 +1,206 @@
-.content__text {
-  font-size: 16px;
-  line-height: 20px;
+.about_me {
+  display: flex;
+  height: 90vh;
+  width: 100%;
+  gap: 10%;
+  justify-content: center;
+  align-items: center;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-bottom: 0%;
+  padding-bottom: 100px;
+}
+
+.about_me__img {
+  flex: 1;
+}
+
+#me_img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.about_me__main {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.about_me__contact {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10%;
+  gap: 5%;
+}
+
+.about_me__resume {
+  flex: 1;
+  white-space: nowrap;
+}
+
+#about_me__resume {
+  font-size: 1.25rem;
+  color: #f4f4f4;
+}
+
+.contact_form {
+  flex: 2;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+#messageForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.message_area {
+  margin-top: -8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#messageText {
+  font-size: 1rem;
+  height: 100%;
+  width: 100%;
+  max-width: 350px;
+  padding-left: 10px;
+  padding-top: 12px;
+  padding-right: 35px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: none;
+  background-color: #e9e9e9;
+  box-sizing: border-box;
+}
+
+#messageText::placeholder {
+  padding-left: 1%;
+  vertical-align: middle;
+}
+
+#messageButton {
+  position: relative;
+  align-self: center;
+  top: 1px;
+  right: 30px;
+  background-color: #e9e9e9;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#messageButton:hover {
+  color: #FF4545;
+}
+
+#messageIcon {
+  width: 20px;
+  height: 20px;
+}
+
+#messageSuccess, #messageError {
+  display: none;
+  font-size: 1rem;
+}
+
+#messageSuccess {
+  color: #FFFF00;
+}
+
+#messageError {
+  color: #FF4545;
+  margin-top: -5px;
+}
+
+#about_me__hey {
+  font-size: 2.5rem;
+  color: #f4f4f4;
+  margin-bottom: 2%;
+}
+
+#about_me__name {
+  font-size: 2rem;
+  color: #f4f4f4;
+}
+
+#about_me__description {
+  font-size: 1.25rem;
+  color: #f4f4f4;
+}
+
+#about_me__skills {
+  margin-top: 5%;
+  font-size: 1.25rem;
+  color: #f4f4f4;
+}
+
+#about_me__love {
+  font-size: 1.25rem;
+  color: #f4f4f4;
+}
+
+#more0, #more1, #more2 {
+  display: none;
+}
+
+#dots0, #dots1, #dots2 {
+  cursor: pointer;
+}
+
+#dots0:hover, #dots1:hover, #dots2:hover {
+  color: #909090;
 }
 
 @media screen and (max-width: 768px) {
-  .content__text {
+  .about_me {
+    flex-direction: column;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 0 0;
+    margin-left: 2%;
+    padding-right: 2%;
+  }
+  .about_me__img {
+    max-width: 35%;
+  }
+  .about_me__main {
+    flex: 1;
+    text-align: center;
+    margin-top: -10%;
+    padding-bottom: 70px;
+  }
+  .about_me__contact {
+    margin-top: 6%;
+    padding-top: 2%;
+  }
+  .contact_form {
+    position: relative;
+    left: 5px;
+  }
+  #about_me__skills, #about_me__love {
+    text-align: left;
+  }
+  #messageError {
+    margin-top: -20px;
+  }
+  #about_me__resume {
     font-size: 1rem;
-    line-height: 25px;
+  }
+  #messageText {
+    font-size: 0.75rem;
   }
 }

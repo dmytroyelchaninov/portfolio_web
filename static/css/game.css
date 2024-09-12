@@ -3,34 +3,90 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding-top: 100px;
+  padding-top: 140px;
   padding-bottom: 100px;
-  position: relative; /* Position arrows relative to the container */
+  position: relative;
   overflow: hidden;
 }
 
 .explanation {
+  margin-right: 10%;
+  max-width: max-content;
   display: flex;
+  position: fixed;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 120px;
+  z-index: 10;
+}
+
+.explanation__title {
+  display: flex;
+  position: relative;
+  white-space: nowrap;
+  width: auto;
+  z-index: 3;
+  margin-right: 20%;
 }
 
 .explanation__text {
-  position: relative;
-  margin-left: 20px;
-  margin-right: 20px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: 2;
+  padding-left: 2%;
 }
 
-#game-title {
-  font-size: 1.5rem;
+.explanation__text::before {
+  content: "";
+  position: absolute;
+  top: -1000%;
+  width: 100vw;
+  height: 0;
+  background-color: black;
+  opacity: 0.93;
+  z-index: -1;
+}
+
+.explanation__text.expanded {
+  opacity: 1;
+  height: 100%;
+}
+
+.explanation__text.expanded::before {
+  top: -25%;
+  height: 200%;
+}
+
+.explanation__arrow {
+  display: flex;
+  transform: rotate(-90deg);
+  font-size: 2.5rem;
+  z-index: 3;
+  cursor: pointer;
+  position: relative;
+  width: 0%;
+  margin-right: 20%;
+}
+
+.explanation__arrow.expanded {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  transform: rotate(90deg);
+}
+
+#explanation__title {
+  font-size: 2.1rem;
   color: #f4f4f4;
   margin-bottom: 10px;
+  margin-left: 3%;
 }
 
-#game-description {
-  display: none; /* Hide the description by default */
-  transition: max-height 0.3s ease-out;
-  overflow: hidden;
+#explanation__description {
   font-size: 16px;
   color: #f4f4f4;
+  margin-left: 3%;
 }
 
 #git-link {
@@ -39,59 +95,18 @@
   font-size: 16px;
 }
 
-.arrow-container {
-  position: relative;
-  width: 100%; /* Make the container take full width of the parent */
-  height: 40px; /* Adjust as needed */
-}
-.arrow-container .arrow {
-  position: absolute;
-  top: 20%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Perfectly centered */
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 15px solid #f4f4f4; /* Adjust the size and color */
-}
-
-.explanation__text .arrow-container {
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  font-size: 1.5rem;
-  position: relative;
-}
-
-.explanation__text.expanded #game-description {
-  display: block;
-}
-
-.explanation__text.expanded .arrow-container {
-  transform: rotate(180deg);
-}
-
 .crowns {
   display: flex;
   position: absolute;
-  top: 10%;
+  top: 15%;
   left: 0;
   width: 40%;
   height: 40%;
   object-fit: cover;
 }
 
-.dragdropimg {
-  display: none;
-  position: absolute;
-  top: 10%;
-  left: 5%;
-  width: 10%;
-  height: 10%;
-  object-fit: contain;
-}
-
 .image-wrapper {
+  padding-top: 3%;
   position: relative;
   width: 100%;
   max-width: 650px;
@@ -101,31 +116,31 @@
   align-items: center;
   overflow: hidden;
   border-radius: 0px;
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  transition: background-color 0.3s ease;
 }
 
 .image-wrapper.drag-over {
-  background-color: rgba(0, 0, 0, 0.1); /* Change background on hover */
-  border: 2px dashed #f4f4f4; /* Dashed border for drag-and-drop */
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 2px dashed #f4f4f4;
   border-radius: 5px;
 }
 
 .game-image {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* Ensure the image fits within the container without distortion */
-  transition: transform 1s linear; /* Smooth rotation transition */
-  cursor: pointer; /* Change cursor to indicate drag-and-drop */
+  object-fit: contain;
+  transition: transform 1s linear;
+  cursor: pointer;
 }
 
 form {
-  display: none; /* Hide the form since we are now processing automatically */
+  display: none;
 }
 
 .test-button {
   display: flex;
   position: absolute;
-  top: 0;
+  top: 8%;
   left: 65%;
   height: auto;
   height: 10%;
@@ -133,6 +148,11 @@ form {
   cursor: pointer;
   transition: filter 0.2s ease;
   filter: brightness(1.4);
+  z-index: 10;
+}
+
+.test-button.expanded {
+  z-index: 1;
 }
 
 .test-button:hover {
@@ -197,8 +217,8 @@ form {
 }
 
 .carousel.drag-over {
-  background-color: rgba(0, 0, 0, 0.1); /* Change background on hover */
-  border: 2px dashed #f4f4f4; /* Dashed border for drag-and-drop */
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 2px dashed #f4f4f4;
   border-radius: 5px;
 }
 
@@ -250,14 +270,14 @@ form {
 
 @media (max-width: 767px) {
   .crowns {
-    top: 10%;
+    top: 12%;
   }
   .game-container {
     padding-top: 90px;
     padding-bottom: 70px;
   }
   .test-button {
-    top: 2%;
+    top: 5%;
   }
   .image-wrapper,
   .carousel {
@@ -269,15 +289,48 @@ form {
   .dragdropimg {
     display: none;
   }
+  .explanation {
+    top: 90px;
+  }
+  #explanation__title {
+    font-size: 1.75rem;
+    margin-right: 0;
+  }
+  .explanation__arrow {
+    font-size: 2rem;
+  }
+  .explanation__arrow.expanded {
+    margin-right: 0;
+  }
 }
 @media (max-width: 480px) {
   .game-container {
     padding-top: 110px;
   }
+  .crowns {
+    top: 17%;
+  }
   .test-button {
-    left: 62%;
-    top: 5%;
+    left: 60%;
+    top: 10%;
     width: 10px;
     filter: brightness(2);
+  }
+  .image-wrapper {
+    padding-top: 10%;
+  }
+  .explanation {
+    top: 80px;
+    margin-right: 2%;
+  }
+  #explanation__title {
+    font-size: 1.35rem;
+    margin-right: 0;
+  }
+  .explanation__arrow {
+    font-size: 1.75rem;
+  }
+  .explanation__arrow.expanded {
+    margin-right: 0;
   }
 }

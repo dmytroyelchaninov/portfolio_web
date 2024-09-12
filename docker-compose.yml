@@ -23,5 +23,5 @@ services:
     depends_on:
       - flask-app
     volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
       - ./static:/static
-      - ./certs:/etc/letsencrypt

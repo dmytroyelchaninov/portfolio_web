@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify, url_for
+from flask_mail import Mail, Message
 import os
 import sys
 from darts.game.image_transform import process_image
 import uuid
+
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 yolos_dir = os.path.join(script_dir, 'yolos')
@@ -50,6 +52,29 @@ def game():
             
         else:
             return jsonify({'message': 'Invalid file type'}), 400
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'dmytroyelchaninov@gmail.com'
+app.config['MAIL_PASSWORD'] = 'wpte dell andx dpni'
+
+mail = Mail(app)
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    data = request.get_json()
+    message_content = data.get('message')
+
+    msg = Message(subject='Someone sent you message from website',
+                  sender=app.config['MAIL_USERNAME'],
+                  recipients=['dmytroyelchaninov@gmail.com'],
+                  body=message_content)
+    try:
+        mail.send(msg)
+        return jsonify({'status': 'success'}), 200
+    except Exception as e:
+        return jsonify({'status': 'failed', 'reason': str(e)}), 500
     
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=False)

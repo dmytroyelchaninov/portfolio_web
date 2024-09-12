@@ -13,13 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const notificationError = document.querySelector('.notification-error');
     const arrowContainer = document.querySelector('.arrow-container');
     const explanationText = document.querySelector('.explanation__text');
+    const explanationArrow = document.querySelector('.explanation__arrow');
+    const testButton = document.querySelector('.test-button');
     const randomImages = [ ];
     for (let i = 1; i<=7; i++) {
         randomImages.push(`static/test_images/${i}.jpg`);
     }
 
-    arrowContainer.addEventListener('click', () => {
+    explanationArrow.addEventListener('click', () => {
         explanationText.classList.toggle('expanded');
+        explanationArrow.classList.toggle('expanded');
+        testButton.classList.toggle('expanded');
     });
     
     let rotationInterval;
