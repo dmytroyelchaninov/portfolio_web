@@ -53,11 +53,6 @@ def game():
         else:
             return jsonify({'message': 'Invalid file type'}), 400
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'dmytroyelchaninov@gmail.com'
-app.config['MAIL_PASSWORD'] = 'wpte dell andx dpni'
 
 mail = Mail(app)
 
