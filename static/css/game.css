@@ -207,6 +207,7 @@ form {
   }
 }
 .carousel {
+  padding-top: 3%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -277,11 +278,14 @@ form {
     padding-bottom: 70px;
   }
   .test-button {
-    top: 5%;
+    top: 8%;
   }
   .image-wrapper,
   .carousel {
     max-width: 90%;
+  }
+  .image-wrapper, .carousel {
+    padding-top: 10%;
   }
   .carousel-control {
     display: none;
@@ -316,8 +320,8 @@ form {
     width: 10px;
     filter: brightness(2);
   }
-  .image-wrapper {
-    padding-top: 10%;
+  .image-wrapper, .carousel {
+    padding-top: 15%;
   }
   .explanation {
     top: 80px;

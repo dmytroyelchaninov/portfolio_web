@@ -106,18 +106,18 @@
 
 #messageSuccess, #messageError {
   display: none;
-  font-size: 1rem;
+  font-size: 1.25rem;
   margin-top: 10%;
+  margin-right: 10%;
+  text-align: center;
 }
 
 #messageSuccess {
   color: #FFFF00;
-  text-align: center;
 }
 
 #messageError {
   color: #FF4545;
-  text-align: center;
 }
 
 @media screen and (max-width: 768px) {
@@ -161,5 +161,10 @@
   }
   #messageButton {
     right: 0;
+  }
+  #messageSuccess, #messageError {
+    margin-right: 0;
+    margin-top: 10%;
+    align-self: center;
   }
 }

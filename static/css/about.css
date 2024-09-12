@@ -116,13 +116,15 @@
   font-size: 1rem;
 }
 
-#messageSuccess {
-  color: #FFFF00;
-}
-
 #messageError {
   color: #FF4545;
   margin-top: -5px;
+}
+
+#messageSuccess {
+  color: #FFFF00;
+  margin-right: 30%;
+  font-size: 1.25rem;
 }
 
 #about_me__hey {
@@ -196,6 +198,10 @@
   }
   #messageError {
     margin-top: -20px;
+  }
+  #messageSuccess {
+    margin-right: 5%;
+    font-size: 1.1rem;
   }
   #about_me__resume {
     font-size: 1rem;

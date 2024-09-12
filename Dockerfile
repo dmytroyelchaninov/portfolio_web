@@ -1,4 +1,3 @@
-# Base image
 FROM python:3.9-slim
 
 WORKDIR /app
@@ -16,4 +15,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "70", "darts.app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "100", "darts.app:app"]
