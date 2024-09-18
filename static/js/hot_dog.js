@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         handleFileDrop(event);
     });
 
-    // Drag and drop functionality for uploaded image
     uploadedImage.addEventListener('dragover', (event) => {
         event.preventDefault();
         uploadedImage.classList.add('drag-over');
@@ -54,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         handleFileDrop(event);
     });
 
-    // Handle the file drop and initiate the upload
     function handleFileDrop(event) {
         const files = event.dataTransfer.files;
         if (isProcessing) {
@@ -71,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Listen to file input change (manual upload)
     fileInput.addEventListener('change', function() {
         const file = fileInput.files[0];
         if (file) {
@@ -79,12 +76,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Function to handle image upload
     function uploadImage(file) {
         const formData = new FormData();
         formData.append('file', file);
 
-        // Show processing notification and hide result text
         processingText.classList.add('show');
         resultText.classList.add('hide');
         isProcessing = true;
@@ -103,26 +98,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (data.result) {
                 resultPos.classList.add('show');
-                resultNeg.classList.add('hide');
+                // resultNeg.classList.add('hide');
             } else {
-                resultPos.classList.add('hide');
+                // resultPos.classList.add('hide');
                 resultNeg.classList.add('show');
             }
-
             processingText.classList.remove('show');
             resultText.classList.remove('hide');
         })
         .catch(err => {
             isProcessing = false;
             console.error('Error:', err);
-
-            // Show error notification
             notificationError.classList.add('show');
             setTimeout(() => {
                 notificationError.classList.remove('show');
             }, 3000);
-
-            // Hide processing text in case of error
             processingText.classList.remove('show');
         });
     }
