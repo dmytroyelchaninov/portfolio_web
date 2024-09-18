@@ -57,4 +57,5 @@ __pycache__/
 src/
 package.json
 package-lock.json
-gulpfile.js
+
+darts/is_hot_dog/is_hot_dog_model.pth  
