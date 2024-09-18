@@ -3,6 +3,7 @@ from flask_mail import Mail, Message
 import os
 import sys
 from darts.game.image_transform import process_image
+from is_hot_dog.is_hot_dog import is_hot
 import uuid
 
 
@@ -75,6 +76,39 @@ def send_message():
         return jsonify({'status': 'success'}), 200
     except Exception as e:
         return jsonify({'status': 'failed', 'reason': str(e)}), 500
+    
+
+@app.route('/hot_dog', methods=['POST'])
+def hot_dog():
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    def allowed_file(filename):
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    print('Received request')
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return jsonify({'message': 'No file'}), 400
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'message': 'No selected file'}), 400
+        
+        if file and allowed_file(file.filename):
+            filename = f"{str(uuid.uuid4())}_{file.filename}"
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            try:
+                file.save(filepath)
+            except Exception as e:
+                return jsonify({'message': f'Failed to save file: {str(e)}'}), 500
+            try:
+                print(f'Checking if it is a hot dog: {filepath}')
+                result = is_hot(filepath)
+            except Exception as e:
+                return jsonify({'message': f'Error checking if it is a hot dog: {str(e)}'}), 500
+            return jsonify({
+                'result': result
+            })
+            
+        else:
+            return jsonify({'message': 'Invalid file type'}), 400
     
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=False)

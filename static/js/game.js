@@ -258,11 +258,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to simulate a random image being "dropped"
     function testImage() {
         // if (rotationInterval) {
-        //     console.log("Stopping rotation..."); // Debugging log
+        //     console.log("Stopping rotation...");
         //     clearInterval(rotationInterval);
-        //     rotationInterval = null; // Clear the interval reference
+        //     rotationInterval = null;
         // }
-        // dartboard.style.transform = `rotate(${currentRotation}deg)`; // Keep the current rotation
+        // dartboard.style.transform = `rotate(${currentRotation}deg)`;
 
         if (isProcessing) {
             console.log("Image processing is in progress. Please wait.");
@@ -282,8 +282,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.blob())
             .then(blob => {
                 const file = new File([blob], `testImage.jpg`, { type: blob.type });
-                resetToInitialImage(); // Reset image before uploading (keep this)
-                setTimeout(() => {      // Add a slight delay before starting rotation
+                resetToInitialImage();
+                setTimeout(() => {
                     resetCarousel();
                     resetToInitialImage();
                     startRotation();

@@ -112,6 +112,39 @@ body.fade-out {
   color: #909090;
 }
 
+/* Ensure the parent li is positioned relatively */
+li {
+  position: relative; /* The submenu will now be positioned relative to this li */
+}
+
+.projects__list {
+  display: none;
+  position: absolute;
+  top: 100%; /* Place right below the hovered menu */
+  left: 0;
+  background-color: black;
+  padding-top: 10px;
+  list-style-type: none;
+  margin: 0;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 4px;
+  border: 2px solid #3b3b3b;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.projects__list li {
+  margin: 0;
+  margin-bottom: 7px;
+  padding: 0;
+}
+
+/* Show the submenu when hovering over the parent li */
+li:hover .projects__list {
+  display: block;
+}
+
 #game_link:hover {
   color: #CC3838;
 }
@@ -246,6 +279,9 @@ body.fade-out {
   }
   .header__social_mobile a:nth-child(2) {
     color: #f4f4f4;
+  }
+  li:hover .projects__list {
+    display: none;
   }
 }
 .content {

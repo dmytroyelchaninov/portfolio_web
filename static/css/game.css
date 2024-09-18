@@ -10,14 +10,13 @@
 }
 
 .explanation {
-  margin-right: 10%;
   max-width: max-content;
   display: flex;
-  position: fixed;
+  position: absolute;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  top: 120px;
+  top: 0;
   z-index: 10;
 }
 
@@ -27,7 +26,6 @@
   white-space: nowrap;
   width: auto;
   z-index: 3;
-  margin-right: 20%;
 }
 
 .explanation__text {
@@ -35,7 +33,6 @@
   height: 0;
   overflow: hidden;
   z-index: 2;
-  padding-left: 2%;
 }
 
 .explanation__text::before {
@@ -56,7 +53,7 @@
 
 .explanation__text.expanded::before {
   top: -25%;
-  height: 200%;
+  height: 130%;
 }
 
 .explanation__arrow {
@@ -67,12 +64,11 @@
   cursor: pointer;
   position: relative;
   width: 0%;
-  margin-right: 20%;
 }
 
 .explanation__arrow.expanded {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 35px;
   transform: rotate(90deg);
 }
 
@@ -80,13 +76,14 @@
   font-size: 2.1rem;
   color: #f4f4f4;
   margin-bottom: 10px;
-  margin-left: 3%;
 }
 
 #explanation__description {
   font-size: 16px;
   color: #f4f4f4;
-  margin-left: 3%;
+  text-align: center;
+  max-width: 90%;
+  padding-left: 10%;
 }
 
 #git-link {
@@ -140,7 +137,7 @@ form {
 .test-button {
   display: flex;
   position: absolute;
-  top: 8%;
+  top: 11%;
   left: 65%;
   height: auto;
   height: 10%;
@@ -278,7 +275,7 @@ form {
     padding-bottom: 70px;
   }
   .test-button {
-    top: 8%;
+    top: 10%;
   }
   .image-wrapper,
   .carousel {
@@ -293,18 +290,11 @@ form {
   .dragdropimg {
     display: none;
   }
-  .explanation {
-    top: 90px;
-  }
   #explanation__title {
     font-size: 1.75rem;
-    margin-right: 0;
   }
   .explanation__arrow {
     font-size: 2rem;
-  }
-  .explanation__arrow.expanded {
-    margin-right: 0;
   }
 }
 @media (max-width: 480px) {
@@ -316,25 +306,17 @@ form {
   }
   .test-button {
     left: 60%;
-    top: 10%;
+    top: 14%;
     width: 10px;
     filter: brightness(2);
   }
   .image-wrapper, .carousel {
     padding-top: 15%;
   }
-  .explanation {
-    top: 80px;
-    margin-right: 2%;
-  }
   #explanation__title {
     font-size: 1.35rem;
-    margin-right: 0;
   }
   .explanation__arrow {
     font-size: 1.75rem;
-  }
-  .explanation__arrow.expanded {
-    margin-right: 0;
   }
 }
