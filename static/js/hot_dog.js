@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const hotdogImage = document.querySelector('.hot__images_hotdog');
     const hotDescription = document.querySelector('.hot__description_text');
     const hotArrow = document.querySelector('.hot__description_arrow');
-    const uploadedImage = document.querySelector('.hot__images_uploaded-image');
+    const uploadedImage = document.getElementById('hot__uploaded-image');
     const processingText = document.querySelector('.hot__result_processing');
     const resultPos = document.querySelector('#hot__result-pos');
     const resultNeg = document.querySelector('#hot__result-neg');

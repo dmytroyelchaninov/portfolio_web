@@ -12,7 +12,7 @@
 }
 
 .desc__title {
-  font-size: 40px;
+  font-size: 32px;
   color: #f4f4f4;
   margin-bottom: 20px;
   text-align: center;
@@ -26,6 +26,10 @@
 
 .desc__main_text {
   color: #f4f4f4;
+}
+
+p {
+  text-indent: 2em;
 }
 
 #desc__header {

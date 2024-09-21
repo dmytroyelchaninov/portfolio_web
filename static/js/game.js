@@ -102,11 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function startRotation(time=100) {
-        if (!rotationInterval) { // Ensure only one interval is created
+        if (!rotationInterval) {
             console.log("Starting rotation...");
             rotationInterval = setInterval(() => {
                 currentRotation += 1;
-                dartboard.style.transition = 'transform 0.1s linear'; // Smooth transition
+                dartboard.style.transition = 'transform 0.1s linear';
                 dartboard.style.transform = `rotate(${currentRotation}deg)`;
             }, time); // Rotate every 100 milliseconds
         }
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
             clearInterval(rotationInterval);
             rotationInterval = null; // Clear the interval reference
         }
-        dartboard.style.transform = `rotate(${currentRotation}deg)`; // Keep the current rotation
+        dartboard.style.transform = `rotate(${currentRotation}deg)`;
     }
 
     function resetCarousel() {
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('file', file);
         
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/process_image', true);  // Change route to match Flask route
+        xhr.open('POST', '/process_image', true);
         
         xhr.onload = function () {
             if (xhr.status === 200) {
@@ -173,12 +173,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const response = JSON.parse(xhr.responseText);
                 dartboard.src = response.image_url;    
                 setTimeout(() => {
-                    imageWrapper.style.display = 'none';  // Hide the image wrapper
-                    carouselProcessed.src = response.image_url;  // Set the processed image
-                    carouselInitial.src = URL.createObjectURL(file);  // Set the initial uploaded image
-                    carousel.style.display = 'block';  // Show the carousel
-                    showArrows();  // Show the arrows
-                    isProcessing = false;  // Allow new uploads
+                    imageWrapper.style.display = 'none';
+                    carouselProcessed.src = response.image_url;
+                    carouselInitial.src = URL.createObjectURL(file);
+                    carousel.style.display = 'block';
+                    showArrows();
+                    isProcessing = false;
                 }, 0);
             } else {
                 console.log(xhr.responseText);
