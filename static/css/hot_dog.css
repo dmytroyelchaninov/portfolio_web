@@ -157,7 +157,6 @@
 }
 
 .hot__result_text {
-  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -252,6 +251,7 @@ form {
 }
 
 #hot__result-pos, #hot__result-neg {
+  display: none;
   color: #f4f4f4;
   text-align: center;
 }

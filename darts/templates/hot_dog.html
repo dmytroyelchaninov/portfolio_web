@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Dmytro Yelchaninov</title>
+    <meta property="og:title" content="Dmytro Yelchaninov">
+    <meta property="og:description" content="My portfolio and blog">
+    <meta property="og:image" content="https://data-science.me/static/images/me.JPG">
+    <meta property="og:url" content="https://data-science.me">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/hot_dog.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/description_hot.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="container">
+                <div class="header__body">
+                    <a class="header__logo" href="game.html">
+                        <img id="logo" src="" alt="Logo">
+                    </a>
+                    <div class="header__burger">
+                        <span class="span1"></span>
+                        <span class="span2"></span>
+                        <span class="span3"></span>
+                    </div>
+                    <nav class="header__menu">
+                        <ul class="header__list">
+                            <li><a class="header__link" href="about.html">Me</a></li>
+                            <li><a class="header__link" href="projects.html">Projects</a>
+                                <ul class="projects__list">
+                                    <li><a class="header__link" href="hot_dog.html">Hot Dog?</a></li>
+                                    <li><a class="header__link" href="lasik.html">LASIK Surgery</a></li>
+                                    <li><a class="header__link" href="gun_violence.html">Gun Violence</a></li>
+                                    <li><a class="header__link" href="house.html">Amex Housing</a></li>
+                                    <li><a class="header__link" href="everything.html">Everything</a></li>
+                                </ul>
+                            </li>
+                            <li><a id="game_link" href="game.html">DARTs!</a></li>
+                            <li><a class="header__link" href="photo.html">Photography</a></li>
+                            <li><a class="header__link" href="contact.html">Contact</a></li>
+                        </ul>
+                        <div class="header__social_mobile">
+                            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                        </div>
+                    </nav>
+                    <div class="header__social">
+                        <a href="https://linkedin.com/in/dmytro-yelchaninov" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/dmytroyelchaninov" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="content">
+            <div class="container">
+                <main>
+                    <div class="hot__wrapper">
+                        <div class="hot__description">
+                            <div class="hot__description_title">
+                                <h1 id="hot__title">What's that? <br></h1>
+                            </div>
+                            <div class="hot__description_text">
+                                <p id="hot__text">
+                                <p id="drop__title">UPLOAD THE IMAGE TO CHECK IF IT'S A HOT DOG! 🌭 <br></p>
+                                </p>
+                                <p id="hot__text">My app uses a state-of-the-art Vision Transformer (ViT) model, which is more powerful than traditional Convolutional Neural Networks (CNNs)
+                                    like VGG or MobileNet. ViT analyzes the entire image at once, picking up global patterns and details that CNNs often miss. <br>
+                                    Thanks to its global attention mechanism, ViT hits a higher accuracy, outperforming CNNs in most cases. <br>
+                                    Can your picture break my model? <br><br> By the way, welcome to my<a id="git-link" href="https://github.com/dmytroyelchaninov/is_hot_dog"> Github<br></a>and scroll down for more details!
+                                </p>
+                            </div>
+                            <div class="hot__description_arrow">
+                                <buttom id="hot__arrow">&#10094;</buttom>
+                            </div>
+                        </div>
+                        <div class="hot__images">
+                            <div class="hot__images_dragdrop">
+                                <img id="hot__dragdrop" src="images/dragdrop.png" alt="Drag and Drop">
+                            </div>
+                            <div class="hot__images_hotdog">
+                                <img id="hot__hotdog" src="images/hot_title.png" alt="Hot Dog">
+                                <form id="upload-form" method="post" enctype="multipart/form-data"></form>
+                                <input id="file-input" type="file" name="file" style="display:none;" accept="image/*">
+                            </div>
+                            <div class="hot__images_uploaded-image">
+                                <img id="hot__uploaded-image" src="" alt="Uploaded Image">
+                                <form id="upload-form" method="post" enctype="multipart/form-data"></form>
+                                <input id="file-input" type="file" name="file" style="display:none;" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="hot__result">
+                            <!-- <div class="hot__result_processing">
+                                <span id="rotating-dash"> </span>
+                                <p id="processing_text">Processing...</p>
+                            </div> -->
+                            <div class="hot__result_text">
+                                <p id="hot__result-pos">Nice hot dog! 🌭</p>
+                                <p id="hot__result-neg">That's definitely not a hot dog! 🚫</p>
+                            </div>
+                        </div>
+                        <div class="hot__notification-process">
+                            <p>Hold on, image is processing</p>
+                        </div>
+                        <div class="hot__notification-error">
+                            <p>Oops, something went wrong</p>
+                        </div>
+                    </div>
+<script src="{{ url_for('static', filename='js/hot_dog.js') }}"></script>
+<script src="{{ url_for('static', filename='js/burger.js') }}"></script>
+</body>

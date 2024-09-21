@@ -7,7 +7,7 @@
 
 html, body {
   height: 100%;
-  font-family: "Didot", sans-serif;
+  font-family: "Avenir", sans-serif;
   background-color: black;
 }
 
@@ -138,11 +138,13 @@ li {
   margin: 0;
   margin-bottom: 7px;
   padding: 0;
+  white-space: nowrap;
 }
 
 /* Show the submenu when hovering over the parent li */
 li:hover .projects__list {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 #game_link:hover {

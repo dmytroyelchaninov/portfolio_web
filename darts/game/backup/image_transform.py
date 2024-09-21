@@ -791,135 +791,73 @@ def ellipses(board, eps=10, min_samples=7, threshold=10):
     inner_ellipse = board.fit_ellipse(extreme_points, outer=False) 
     return board, outer_ellipse, inner_ellipse
 
-
-
-# Singleton pattern!
-
-# That's an example why I love python.
-# This pattern clearly shows how Python unites ideas of
-# both Object-oriented and Functional programming 
-# in itself!
-
-class DbscanParams():
-    _instance = None
-
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super(DbscanParams, cls).__new__(cls)   # ?
-            # Can you make so in Java with its constructors? :)
-            # How do you think, what is super(), if no parent class exists?
-            # Answer: 
-            # If you aren't familiar, at the first look it seems that when 
-            # .__new__ is called inside .__new__,
-            # we call function recursively. But that .__new__ doesnt belong to the the same class, 
-            # super() returns PARENT class which even currently doesnt exist! 
-            # Actually, it calls object.__new__  - which is literally default object ITSELF!
-            # Next this object assinged to cls.__instance,
-            # which is THIS class attribute, which is shared between all instances (objects) of this class.
-            # Finally, _instance is not None 
-            # What a power of Python!
-        return  cls._instance
-    
-    def __init__(self, eps, min_samples, threshold):
-        if not hasattr(self, 'exists'):
-            self.eps = eps
-            self.min_samples = min_samples
-            self.threshold = threshold
-            self.exists = True
-
-# This pattern saved me 60% of execution time   
 def find_ellipse(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False, padding=0.03):
+    first_try = None
+    second_try = None
+    try:
+        eps_ratio_semis = []
+        ratio_outer_inner = None
+        while ratio_outer_inner is None or ratio_outer_inner > 1.015 and eps > 4:
+            board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
+            ratio_outer_inner = max((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))\
+                /min((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))
+            ratio_outer = (max(outer_ellipse[1][0],outer_ellipse[1][1]))/(min(outer_ellipse[1][0],outer_ellipse[1][1]))
+            eps_ratio_semis.append((eps, ratio_outer_inner, ratio_outer))
+            eps -= 0.2                
 
-    def __find_ellipse1(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False, padding=0.03):
-        first_try = None
-        second_try = None
-        try:
-            eps_ratio_semis = []
-            ratio_outer_inner = None
-            while ratio_outer_inner is None or ratio_outer_inner > 1.015 and eps > 4:
-                board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
-                ratio_outer_inner = max((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))\
-                    /min((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))
-                ratio_outer = (max(outer_ellipse[1][0],outer_ellipse[1][1]))/(min(outer_ellipse[1][0],outer_ellipse[1][1]))
-                eps_ratio_semis.append((eps, ratio_outer_inner, ratio_outer))
-                eps -= 0.2                
-
-        except (IndexError, ValueError):
-            print(f"Unsure with results...Let's try to adjust parameters little bit...")
-            filtered = [i for i in eps_ratio_semis if i[2]<1.5] # Angles limited to 1.5 semis ratio
+    except (IndexError, ValueError):
+        print(f"Unsure with results...Let's try to adjust parameters little bit...")
+        filtered = [i for i in eps_ratio_semis if i[2]<1.5] # Angles limited to 1.5 semis ratio
+        if filtered:
+            eps = min(filtered, key=lambda x: x[1])[0] # Choosing best eps based on similarity of ellipses
+            # print(f"Chosen eps: {eps}, semis ratio: {min(filtered, key=lambda x: x[1])[1]}, ratio_outer: {min(filtered, key=lambda x: x[1])[2]}")
+            first_try = [eps, min_samples, min(filtered, key=lambda x: x[1])[1], min(filtered, key=lambda x: x[1])[2]]
+        else:
+            filtered = [i for i in eps_ratio_semis if i[2]<2] # Angles limited to 2 semis ratio
             if filtered:
                 eps = min(filtered, key=lambda x: x[1])[0] # Choosing best eps based on similarity of ellipses
                 # print(f"Chosen eps: {eps}, semis ratio: {min(filtered, key=lambda x: x[1])[1]}, ratio_outer: {min(filtered, key=lambda x: x[1])[2]}")
                 first_try = [eps, min_samples, min(filtered, key=lambda x: x[1])[1], min(filtered, key=lambda x: x[1])[2]]
             else:
-                filtered = [i for i in eps_ratio_semis if i[2]<2] # Angles limited to 2 semis ratio
-                if filtered:
-                    eps = min(filtered, key=lambda x: x[1])[0] # Choosing best eps based on similarity of ellipses
-                    # print(f"Chosen eps: {eps}, semis ratio: {min(filtered, key=lambda x: x[1])[1]}, ratio_outer: {min(filtered, key=lambda x: x[1])[2]}")
-                    first_try = [eps, min_samples, min(filtered, key=lambda x: x[1])[1], min(filtered, key=lambda x: x[1])[2]]
-                else:
-                    print("One more try...")
-        
-            # Now iterate over min_samples
-            try: 
-                min_samples_ratio_semis = []
-                eps = first_try[0]
-                while ratio_outer_inner > 1.03 and min_samples < 100:
-                    board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
-                    ratio_outer_inner = max((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))\
-                        /min((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))
-                    ratio_outer = (max(outer_ellipse[1][0],outer_ellipse[1][1]))/(min(outer_ellipse[1][0],outer_ellipse[1][1]))
-                    min_samples_ratio_semis.append((min_samples, ratio_outer_inner, ratio_outer, threshold))
-                    if threshold > 0:
-                        threshold -= 1
-                    min_samples += 0.5
-                filtered = [i for i in min_samples_ratio_semis if i[2]<2]
-                min_samples = min(filtered, key=lambda x: x[1])[0]
-                second_try = [eps, min_samples, min(min_samples_ratio_semis, key=lambda x: x[1])[1], min(min_samples_ratio_semis, key=lambda x: x[1])[2]]
-            
-            except (IndexError, ValueError):
-                filtered = [i for i in min_samples_ratio_semis if i[2]<2]
-                print("Hmm...")
-                if filtered:
-                    min_samples = min(filtered, key=lambda x: x[1])[0]
-                    second_try = [first_try[0], min_samples, min(filtered, key=lambda x: x[1])[1], min(filtered, key=lambda x: x[1])[2]]
-                else:
-                    print("Cant detect board, please take image from another angle")
-                    raise ValueError("Board not detected")
-
-        if (first_try is not None) and (second_try is not None):
-            eps = second_try[0]
-            min_samples = second_try[1]
-            threshold = second_try[3]
-        board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
-        board._outer_ellipse = outer_ellipse
-        board._inner_ellipse = inner_ellipse
-        board.crop_ellipse(outer_ellipse, outer_padding_factor=padding)
-
-        # Here we go, sigleton pattern usage:
-        _ = DbscanParams(eps=eps, min_samples=min_samples, threshold=threshold)
-        # We will not use the name of the object
-        return board
-    
-    def __find_ellipse2(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False, padding=0.03):
-
-        board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
-                
-        board._outer_ellipse = outer_ellipse
-        board._inner_ellipse = inner_ellipse
-        board.crop_ellipse(outer_ellipse, outer_padding_factor=padding)
-
-        return board
-    
-    if DbscanParams._instance is None:
-        return __find_ellipse1(board, eps=eps, min_samples=min_samples, threshold=threshold, plot_ellipse=plot_ellipse, padding=padding)
-    else:
-        params = DbscanParams._instance
-        eps = params.eps
-        min_samples = params.min_samples
-        threshold = params.threshold
-        return __find_ellipse2(board, eps=eps, min_samples=min_samples, threshold=threshold, plot_ellipse=plot_ellipse, padding=padding)
+                print("One more try...")
        
+        # Now iterate over min_samples
+        try: 
+            min_samples_ratio_semis = []
+            eps = first_try[0]
+            while ratio_outer_inner > 1.03 and min_samples < 100:
+                board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
+                ratio_outer_inner = max((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))\
+                    /min((outer_ellipse[1][0]/outer_ellipse[1][1]),(inner_ellipse[1][0]/inner_ellipse[1][1]))
+                ratio_outer = (max(outer_ellipse[1][0],outer_ellipse[1][1]))/(min(outer_ellipse[1][0],outer_ellipse[1][1]))
+                min_samples_ratio_semis.append((min_samples, ratio_outer_inner, ratio_outer, threshold))
+                if threshold > 0:
+                    threshold -= 1
+                min_samples += 0.5
+            filtered = [i for i in min_samples_ratio_semis if i[2]<2]
+            min_samples = min(filtered, key=lambda x: x[1])[0]
+            second_try = [eps, min_samples, min(min_samples_ratio_semis, key=lambda x: x[1])[1], min(min_samples_ratio_semis, key=lambda x: x[1])[2]]
+        
+        except (IndexError, ValueError):
+            filtered = [i for i in min_samples_ratio_semis if i[2]<2]
+            print("Hmm...")
+            if filtered:
+                min_samples = min(filtered, key=lambda x: x[1])[0]
+                second_try = [first_try[0], min_samples, min(filtered, key=lambda x: x[1])[1], min(filtered, key=lambda x: x[1])[2]]
+            else:
+                print("Cant detect board, please take image from another angle")
+                raise ValueError("Board not detected")
+
+    if (first_try is not None) and (second_try is not None):
+        eps = second_try[0]
+        min_samples = second_try[1]
+        threshold = second_try[3]
+    board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
+    board._outer_ellipse = outer_ellipse
+    board._inner_ellipse = inner_ellipse
+    board.crop_ellipse(outer_ellipse, outer_padding_factor=padding)
+
+    return board
 
 def initial_prepare(board, crop_eye=0.25, crop_scale=1.0, size=None):
     """Receives basic BoardTransform with ._img

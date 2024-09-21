@@ -1,8 +1,8 @@
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, render_template
 from flask_mail import Mail, Message
 import os
 import sys
-from darts.game.image_transform import process_image
+# from darts.game.image_transform import process_image
 from is_hot_dog.is_hot_dog import is_hot
 import uuid
 
@@ -78,7 +78,7 @@ def send_message():
         return jsonify({'status': 'failed', 'reason': str(e)}), 500
     
 
-@app.route('/hot_dog', methods=['POST'])
+@app.route('/hot_dog', methods=['GET', 'POST'])
 def hot_dog():
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
     def allowed_file(filename):
@@ -101,6 +101,7 @@ def hot_dog():
             try:
                 print(f'Checking if it is a hot dog: {filepath}')
                 result = is_hot(filepath)
+                print(f'Is it a hot dog: {result}')
             except Exception as e:
                 return jsonify({'message': f'Error checking if it is a hot dog: {str(e)}'}), 500
             return jsonify({
@@ -110,5 +111,8 @@ def hot_dog():
         else:
             return jsonify({'message': 'Invalid file type'}), 400
     
+    # return render_template('hot_dog.html')
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=False)
+    # app.run(debug=True, port=5000)

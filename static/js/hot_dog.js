@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadedImage.classList.remove('drag-over');
         handleFileDrop(event);
     });
+    hotdogImage.addEventListener('click', () => {
+        fileInput.click();
+    });
 
     function handleFileDrop(event) {
         const files = event.dataTransfer.files;
@@ -77,11 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function uploadImage(file) {
+        console.log("Uploading image...");
         const formData = new FormData();
         formData.append('file', file);
-
-        processingText.classList.add('show');
-        resultText.classList.add('hide');
         isProcessing = true;
 
         fetch('/hot_dog', {
@@ -93,18 +94,16 @@ document.addEventListener('DOMContentLoaded', function() {
             isProcessing = false;
             const imgURL = URL.createObjectURL(file);
             uploadedImage.src = imgURL;
-            uploadedImage.classList.add('show');
-            hotdogImage.classList.add('hide');
-
+            hotdogImage.style.display = 'none';
+            uploadedImage.style.display = 'flex';
+            
             if (data.result) {
-                resultPos.classList.add('show');
-                // resultNeg.classList.add('hide');
+                resultPos.style.display = 'flex';
+                resultNeg.style.display = 'none';
             } else {
-                // resultPos.classList.add('hide');
-                resultNeg.classList.add('show');
+                resultNeg.style.display = 'flex';
+                resultPos.style.display = 'none';
             }
-            processingText.classList.remove('show');
-            resultText.classList.remove('hide');
         })
         .catch(err => {
             isProcessing = false;
@@ -113,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 notificationError.classList.remove('show');
             }, 3000);
-            processingText.classList.remove('show');
         });
     }
 });
