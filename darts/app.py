@@ -3,7 +3,7 @@ from flask_mail import Mail, Message
 import os
 import sys
 from darts.game.image_transform import process_image
-from is_hot_dog.is_hot_dog import is_hot
+from darts.is_hot_dog.is_hot_dog import is_hot
 import uuid
 
 
