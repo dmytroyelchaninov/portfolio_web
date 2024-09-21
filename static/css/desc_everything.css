@@ -11,8 +11,24 @@
   margin-bottom: 20px;
 }
 
-.desc__main_text {
+.desc__title {
+  font-size: 40px;
+  color: #f4f4f4;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.desc__main {
   font-family: "Avenir", sans-serif;
   font-size: 16px;
   line-height: 1.5;
+}
+
+.desc__main_text {
+  color: #f4f4f4;
+}
+
+#desc__header {
+  font-size: 19.2px;
+  margin-bottom: 20px;
 }

@@ -135,7 +135,7 @@
   position: relative;
   justify-content: center;
   align-items: center;
-  max-width: 45%;
+  max-width: 40%;
 }
 
 .hot__result {
@@ -288,6 +288,9 @@ form {
   }
   .hot__images_hotdog {
     max-width: 65%;
+  }
+  .hot__images_uploaded-image {
+    max-width: 60%;
   }
   .hot__result {
     font-size: 1.4rem;
