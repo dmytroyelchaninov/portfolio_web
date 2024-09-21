@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('file', file);
         isProcessing = true;
 
-        fetch('/hot_dog', {
+        fetch('/is_hot_dog', {
             method: 'POST',
             body: formData
         })

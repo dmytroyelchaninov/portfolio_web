@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for, render_template
+from flask import Flask, request, jsonify, url_for
 from flask_mail import Mail, Message
 import os
 import sys
@@ -78,7 +78,7 @@ def send_message():
         return jsonify({'status': 'failed', 'reason': str(e)}), 500
     
 
-@app.route('/hot_dog', methods=['POST'])
+@app.route('/is_hot_dog', methods=['POST'])
 def hot_dog():
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
     def allowed_file(filename):
