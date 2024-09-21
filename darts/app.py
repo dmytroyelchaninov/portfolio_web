@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, url_for, render_template
 from flask_mail import Mail, Message
 import os
 import sys
-# from darts.game.image_transform import process_image
+from darts.game.image_transform import process_image
 from is_hot_dog.is_hot_dog import is_hot
 import uuid
 
