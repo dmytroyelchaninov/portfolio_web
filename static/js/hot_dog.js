@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const hotDescription = document.querySelector('.hot__description_text');
     const hotArrow = document.querySelector('.hot__description_arrow');
     const uploadedImage = document.getElementById('hot__uploaded-image');
+    const uploadedImageWrapper = document.querySelector('.hot__images_uploaded-image');
     const processingText = document.querySelector('.hot__result_processing');
     const resultPos = document.querySelector('#hot__result-pos');
     const resultNeg = document.querySelector('#hot__result-neg');
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const imgURL = URL.createObjectURL(file);
             uploadedImage.src = imgURL;
             hotdogImage.style.display = 'none';
-            uploadedImage.style.display = 'flex';
+            uploadedImageWrapper.style.display = 'flex';
             
             if (data.result) {
                 resultPos.style.display = 'flex';
