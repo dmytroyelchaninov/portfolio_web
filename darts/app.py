@@ -78,7 +78,7 @@ def send_message():
         return jsonify({'status': 'failed', 'reason': str(e)}), 500
     
 
-@app.route('/hot_dog', methods=['GET', 'POST'])
+@app.route('/hot_dog', methods=['POST'])
 def hot_dog():
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
     def allowed_file(filename):
