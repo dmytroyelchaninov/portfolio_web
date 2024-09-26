@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const explanationArrow = document.querySelector('.explanation__arrow');
     const testButton = document.querySelector('.test-button');
     const randomImages = [ ];
-    for (let i = 1; i<=10; i++) {
+    for (let i = 1; i<=11; i++) {
         randomImages.push(`static/test_images/${i}.jpg`);
     }
 

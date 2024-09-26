@@ -1,7 +1,8 @@
 .desc__container {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   max-width: 1000px;
   margin: 0 auto;
   background-color: black;
@@ -16,23 +17,29 @@
   color: #f4f4f4;
   margin-bottom: 20px;
   text-align: center;
+  font-weight: 500;
 }
 
 .desc__main {
   font-family: "Avenir", sans-serif;
-  font-size: 16px;
+  font-size: 17.6px;
   line-height: 1.5;
 }
 
 .desc__main_text {
   color: #f4f4f4;
+  text-align: justify;
 }
 
 p {
   text-indent: 2em;
 }
 
-#desc__header {
-  font-size: 19.2px;
-  margin-bottom: 20px;
+.desc__step_title {
+  font-size: 24px;
+  color: #f4f4f4;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  text-align: center;
+  font-weight: 500;
 }
