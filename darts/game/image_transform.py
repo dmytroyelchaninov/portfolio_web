@@ -2,9 +2,8 @@ import os
 import numpy as np
 import cv2 as cv
 from PIL import Image
-
-from sklearn.cluster import DBSCAN
 from ultralytics import YOLO
+from sklearn.cluster import DBSCAN
 
 model_dir = os.path.join(os.path.dirname(__file__), 'yolos')
 model1 = os.path.join(model_dir, 'part1.pt')
@@ -631,7 +630,7 @@ class Scores():
         for prediction, score in zip(predictions, self._scores):
             distance, angle = self.calculate_distance_and_angle(prediction)
             text = f'{score}'
-            font_scale = 1.5
+            font_scale = 1.0
             thickness = 2
             font = cv.FONT_HERSHEY_TRIPLEX
             text_size = cv.getTextSize(text, font, font_scale, thickness)[0]
@@ -710,6 +709,20 @@ def yolo_crop(image, model, padding=25, padding_box=0, blackout_boxes=[]):
 
     return mask, n_classes
 
+def yolo_init(image):
+    model = YOLO('./yolos/yolo_crop.pt')
+    results = model(image)
+    boxes = results[0].boxes
+    centers = []
+
+    for box in boxes:
+        x1, y1, x2, y2 = box.xyxy[0]
+        x_center = (x1 + x2) / 2
+        y_center = (y1 + y2) / 2
+        centers.append((x_center.item(), y_center.item()))
+
+    return centers
+
 def predict(board, part1, part2):
     padding = 20
     img = board._img
@@ -730,6 +743,7 @@ def predict(board, part1, part2):
         raise ValueError("Bad prediction")
 
     return predictions
+
 
 def find_bulls_eye(board, crop_eye=0.25, min_radius=8, max_radius=30, param1=70, param2=20, plots=False, centered=False):
 
@@ -771,7 +785,8 @@ def find_bulls_eye(board, crop_eye=0.25, min_radius=8, max_radius=30, param1=70,
                     crop_mask_res.crop_radial(center=center, crop_factor=crop_eye)
                     crop_mask_res.apply_masks(colors=['red', 'green'], lower_scale=1.0, upper_scale=1.0)
                     precise_center, radius, circles = crop_mask_res.find_center(min_radius=min_radius, max_radius=max_radius, param1=param1, param2=param2)
- 
+
+
                     return precise_center
                 except ValueError:
                     return center
@@ -780,18 +795,18 @@ def find_bulls_eye(board, crop_eye=0.25, min_radius=8, max_radius=30, param1=70,
     print("Tough to find a center... Let's give another try...")
     return initial_center
 
+
 def ellipses(board, eps=10, min_samples=7, threshold=10):
     dbscan = BoardTransform(board)
     dbscan.apply_masks(colors=['red', 'green'], lower_scale=1.0, upper_scale=1.0)
-    outer_ring, inner_ring = dbscan.dbscan_clustering(eps=eps, min_samples=min_samples, threshold=threshold)
-    
+    outer_ring, inner_ring = dbscan.dbscan_clustering(eps=10, min_samples=7, threshold=0)
+ 
     extreme_points = board.gather_extreme_points(coords=outer_ring)
     outer_ellipse = board.fit_ellipse(extreme_points, outer=True)
     extreme_points = board.gather_extreme_points(coords=inner_ring)
     inner_ellipse = board.fit_ellipse(extreme_points, outer=False) 
+
     return board, outer_ellipse, inner_ellipse
-
-
 
 # Singleton pattern!
 
@@ -828,8 +843,7 @@ class DbscanParams():
             self.exists = True
 
 # This pattern saved me 60% of execution time   
-def find_ellipse(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False, padding=0.03):
-
+def find_ellipse_res(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False, padding=0.03):
     def __find_ellipse1(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False, padding=0.03):
         first_try = None
         second_try = None
@@ -912,14 +926,21 @@ def find_ellipse(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False,
         return board
     
     if DbscanParams._instance is None:
-        return __find_ellipse1(board, eps=eps, min_samples=min_samples, threshold=threshold, plot_ellipse=plot_ellipse, padding=padding)
+        return __find_ellipse2(board, eps=eps, min_samples=min_samples, threshold=threshold, plot_ellipse=plot_ellipse, padding=padding)
     else:
         params = DbscanParams._instance
         eps = params.eps
         min_samples = params.min_samples
         threshold = params.threshold
         return __find_ellipse2(board, eps=eps, min_samples=min_samples, threshold=threshold, plot_ellipse=plot_ellipse, padding=padding)
-       
+
+def find_ellipse(board, eps=10, min_samples=7, threshold=10, plot_ellipse=False):
+    board, outer_ellipse, inner_ellipse = ellipses(board, eps=eps, min_samples=min_samples, threshold=threshold)
+    board._outer_ellipse = outer_ellipse
+    board._inner_ellipse = inner_ellipse
+    board.crop_ellipse(outer_ellipse, outer_padding_factor=0.035)
+    return board
+
 
 def initial_prepare(board, crop_eye=0.25, crop_scale=1.0, size=None):
     """Receives basic BoardTransform with ._img
@@ -936,9 +957,9 @@ def initial_prepare(board, crop_eye=0.25, crop_scale=1.0, size=None):
         raise ValueError("Center was not found")
     if bulls_eye:
         board._center = bulls_eye
-        board.crop_radial(bulls_eye, crop_factor=0.8*crop_scale)
+        board.crop_radial(bulls_eye, crop_factor=1.0*crop_scale)
     else:
-        board.crop_radial(crop_factor=0.9*crop_scale)
+        board.crop_radial(crop_factor=1.0*crop_scale)
     
     return board
 
@@ -979,8 +1000,12 @@ def iterative_transform(board,
 
     shifts = []
     for i in range(1,iterations+1):
+        
+        # 0.6 sec for 1 block of find_ellipse and transform_perspective
         board = find_ellipse(board, eps=eps, min_samples=min_samples, threshold=threshold, plot_ellipse=False)
         board, predictions, shifts = transform_perspective(board, predictions, plots=plot_steps, crop_eye=crop_eye, shifts=shifts)
+        
+        
         if i == 3 or i==4 or i == 5:
             model_dir = os.path.join(os.path.dirname(__file__), 'yolos')
             model2 = os.path.join(model_dir, 'part2.pt')
@@ -1012,7 +1037,7 @@ def iterative_transform(board,
             new_center = find_bulls_eye(board, crop_eye=0.25, plots=False, centered=True, max_radius=20, min_radius=13, param1=50, param2=15)
             old_center = board._center
             board._center = new_center
-            
+      
     total_shift_x = 0
     total_shift_y = 0
     for shift in shifts:
@@ -1089,6 +1114,16 @@ def transform(img_path, predictions, eps=10, min_samples=7, threshold=10, crop_s
         original = Board(img_path)
         board = BoardTransform(original)
         board = initial_prepare(board, crop_eye=crop_eye, crop_scale=crop_scale, size=size_transform)
+
+        points = yolo_init(board._img)
+        board.fit_ellipse(points, outer=True)
+        board.crop_ellipse(board._outer_ellipse, outer_padding_factor=0.08)
+
+        # img_rgb = cv.cvtColor(board._img, cv.COLOR_BGR2RGB)
+        # plt.imshow(img_rgb)
+        # plt.axis('off')
+        # plt.show()    
+
 # JUST OKAY HERE
         transformed, predictions = iterative_transform(
             board,
@@ -1097,7 +1132,6 @@ def transform(img_path, predictions, eps=10, min_samples=7, threshold=10, crop_s
             eps=eps, min_samples=min_samples, threshold=threshold,
             crop_eye=crop_eye,
         )
-
         outer_ellipse = transformed._outer_ellipse
         inner_ellipse = transformed._inner_ellipse
         outer_ellipse = (
@@ -1127,16 +1161,20 @@ def transform(img_path, predictions, eps=10, min_samples=7, threshold=10, crop_s
         print(f"Error processing {img_path}: {str(e)}")
         raise ValueError("Error processing image")
 
-
+import time
+import matplotlib.pyplot as plt
 def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show=False, test=False, test_n=None):
     if test:
         img_path = f'./test/{test_n}.jpg'
+    
+    start = time.time()
 
     original = Board(img_path)
     board = BoardTransform(original)
-    size = (1000, 1000)
+    size = (500, 500)
+
     board = initial_prepare(board, size=size, crop_scale=1.3)
-    
+
     # Models
     model_dir = os.path.join(os.path.dirname(__file__), 'yolos')
     model1 = os.path.join(model_dir, 'part1.pt')
@@ -1145,7 +1183,9 @@ def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show
     part2 = YOLO(model2)
     predictions = predict(board, part1, part2)
 
+
     transformed, predictions, center20 = transform(img_path, predictions, size_transform=size, iterations=5)
+    
     angle = np.degrees(np.arctan2(center20[1] - transformed._center[1], center20[0] - transformed._center[0]))
     angle = angle if angle >= 0 else angle + 360
     shift_angle = 270 - angle
@@ -1167,10 +1207,23 @@ def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show
 
     processed_image.save(processed_image_path, format='PNG')
 
-    print(f"Processed image saved as {processed_image_path}")
+    end = time.time()
+    print(f"Time elapsed: {end - start} seconds")
 
     return processed_image_path, score
 
 
 if __name__ == '__main__':
     pass
+    # for i in range(1, 2):
+    #     img_path = f'./test_images/{i}.jpg'
+    #     processed_image_path, score = process_image(img_path, test=False)
+    #     print(f"Image: {i}.jpg")
+    #     print(f"Score: {score}")
+    #     print(f"Processed image saved as {processed_image_path}\n")
+
+
+    # img_path = './test_images/5.jpg'
+    # processed_image_path, score = process_image(img_path, test=False)
+    # print(f"Score: {score}")
+    # print(f"Processed image saved as {processed_image_path}")
