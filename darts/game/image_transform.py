@@ -1161,13 +1161,9 @@ def transform(img_path, predictions, eps=10, min_samples=7, threshold=10, crop_s
         print(f"Error processing {img_path}: {str(e)}")
         raise ValueError("Error processing image")
 
-import time
-import matplotlib.pyplot as plt
 def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show=False, test=False, test_n=None):
     if test:
         img_path = f'./test/{test_n}.jpg'
-    
-    start = time.time()
 
     original = Board(img_path)
     board = BoardTransform(original)
@@ -1207,8 +1203,6 @@ def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show
 
     processed_image.save(processed_image_path, format='PNG')
 
-    end = time.time()
-    print(f"Time elapsed: {end - start} seconds")
 
     return processed_image_path, score
 
