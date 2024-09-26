@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Dmytro Yelchaninov</title>
+    <meta property="og:title" content="Dmytro Yelchaninov">
+    <meta property="og:description" content="My portfolio and blog">
+    <meta property="og:image" content="https://data-science.me/static/images/me.JPG">
+    <meta property="og:url" content="https://data-science.me">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/game.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/description_darts.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="container">
+                <div class="header__body">
+                    <a class="header__logo" href="game.html">
+                        <img id="logo" src="" alt="Logo">
+                    </a>
+                    <div class="header__burger">
+                        <span class="span1"></span>
+                        <span class="span2"></span>
+                        <span class="span3"></span>
+                    </div>
+                    <nav class="header__menu">
+                        <ul class="header__list">
+                            <li><a class="header__link" href="about.html">Me</a></li>
+                            <li>
+                                <a class="header__link" href="projects.html">Projects</a>
+                                <ul class="projects__list">
+                                    <li><a class="header__link" href="hot_dog.html">Hot Dog?</a></li>
+                                    <li><a class="header__link" href="lasik.html">LASIK Surgery</a></li>
+                                    <li><a class="header__link" href="gun_violence.html">Gun Violence</a></li>
+                                    <li><a class="header__link" href="house.html">Amex Housing</a></li>
+                                    <li><a class="header__link" href="everything.html">Everything</a></li>
+                                </ul>
+                            </li>
+                            <li><a id="game_link" href="game.html">DARTs!</a></li>
+                            <li><a class="header__link" href="photo.html">Photography</a></li>
+                            <li><a class="header__link" href="contact.html">Contact</a></li>
+                        </ul>
+                        <div class="header__social_mobile">
+                            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                        </div>
+                    </nav>
+                    <div class="header__social">
+                        <a href="https://linkedin.com/in/dmytro-yelchaninov" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/dmytroyelchaninov" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="container">
+                <main>
+                    <div class="game-container">
+                        <div class="explanation">
+                            <div class="explanation__title">
+                                <h1 id="explanation__title">What's going on here?! 🎯</h1>
+                            </div>
+                            <div class="explanation__text">
+                                <p id="explanation__description">
+                                    Upload a picture of your dartboard, and the app will automatically detect and track dart positions using advanced image processing with OpenCV, YOLO, and clustering methods. <br>
+                                    SWIPE RIGHT TO SEE UNPROCESSED IMAGE <br>
+                                    If you click on the TEST button, a random image from the test library will be uploaded. <br>
+                                    May be little slow, due to low-end the CPU on the server and iterative clustering, <br>
+                                    but soon it will become much faster. <br><br>
+                                    You can check the full app on my
+                                    <a id="git-link" href="https://github.com/dmytroyelchaninov/dart_game_ai">Github. <br></a>
+                                    Additional features like automatic Airdrop for Apple users, game logic, and other functionalities are there.<br><br>
+                                    Scroll down for more details!
+                                </p>
+                            </div>
+                            <div class="explanation__arrow">
+                                <button id="explanation__arrow">&#10094;</button>
+                            </div>
+                        </div>
+                        <div class="crowns">
+                            <img id="crowns" src="images/crowns.jpg" alt="Crowns">
+                        </div>
+                        <div class="image-wrapper" id="image-wrapper">
+                            <img class="game-image" id="dartboard" src="{{ url_for('static', filename='images/title.png') }}" alt="Dartboard">
+                            <form id="upload-form" method="post" enctype="multipart/form-data"></form>
+                            <input id="file-input" type="file" name="file" style="display:none;" accept="image/*">
+                        </div>
+
+                        <div class="carousel" id="carousel" style="display: none;">
+                            <div class="carousel-images">
+                                <img class="carousel-image" id="carousel-processed" src="" alt="Processed Image">
+                                <img class="carousel-image" id="carousel-initial" src="" alt="Initial Image">
+                                <form id="upload-form-carousel" method="post" enctype="multipart/form-data"></form>
+                                <input id="file-input-carousel" type="file" name="file" style="display:none;" accept="image/*">
+                            </div>
+                        </div>
+
+                        <div class="test-button">
+                            <img id="test-button" src="{{ url_for('static', filename='images/test_me.jpg') }}" alt="Test Me" onclick="testImage()">
+                        </div>
+
+                        <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
+                        <button class="carousel-control next" onclick="nextSlide()">&#10095;</button>
+                    </div>
+
+                    <div class="notification-process">
+                        <p>Hold on, image is processing</p>
+                    </div>
+                    <div class="notification-error">
+                        <p>Oops, something went wrong</p>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/logo.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/transition.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/burger.js') }}"></script>
+
+    <footer class="footer">
+        <div class="footer__body">
+            <div class="footer__text">
+                <p>&copy; 2024 Yelchaninov</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

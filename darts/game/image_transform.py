@@ -709,8 +709,7 @@ def yolo_crop(image, model, padding=25, padding_box=0, blackout_boxes=[]):
 
     return mask, n_classes
 
-def yolo_init(image):
-    model = YOLO('./yolos/yolo_crop.pt')
+def yolo_init(image, model):
     results = model(image)
     boxes = results[0].boxes
     centers = []
@@ -1115,7 +1114,11 @@ def transform(img_path, predictions, eps=10, min_samples=7, threshold=10, crop_s
         board = BoardTransform(original)
         board = initial_prepare(board, crop_eye=crop_eye, crop_scale=crop_scale, size=size_transform)
 
-        points = yolo_init(board._img)
+
+        model_dir = os.path.join(os.path.dirname(__file__), 'yolos')
+        model_crop = os.path.join(model_dir, 'yolo_crop.pt')
+        yolo_crop_model = YOLO(model_crop)
+        points = yolo_init(board._img, model=yolo_crop_model)
         board.fit_ellipse(points, outer=True)
         board.crop_ellipse(board._outer_ellipse, outer_padding_factor=0.08)
 
@@ -1160,14 +1163,16 @@ def transform(img_path, predictions, eps=10, min_samples=7, threshold=10, crop_s
     except Exception as e:
         print(f"Error processing {img_path}: {str(e)}")
         raise ValueError("Error processing image")
-
+import time
 def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show=False, test=False, test_n=None):
     if test:
         img_path = f'./test/{test_n}.jpg'
 
+    start = time.time()
+
     original = Board(img_path)
     board = BoardTransform(original)
-    size = (1000, 1000)
+    size = (640, 640)
 
     board = initial_prepare(board, size=size, crop_scale=1.3)
 
@@ -1204,6 +1209,9 @@ def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show
     processed_image.save(processed_image_path, format='PNG')
 
 
+    end = time.time()
+    print(f"Time elapsed: {end-start}")
+
     return processed_image_path, score
 
 
@@ -1217,7 +1225,7 @@ if __name__ == '__main__':
     #     print(f"Processed image saved as {processed_image_path}\n")
 
 
-    # img_path = './test_images/5.jpg'
-    # processed_image_path, score = process_image(img_path, test=False)
-    # print(f"Score: {score}")
-    # print(f"Processed image saved as {processed_image_path}")
+    img_path = './test_images/5.jpg'
+    processed_image_path, score = process_image(img_path, test=False)
+    print(f"Score: {score}")
+    print(f"Processed image saved as {processed_image_path}")

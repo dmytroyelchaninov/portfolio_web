@@ -4,6 +4,7 @@ import os
 import sys
 from darts.game.image_transform import process_image
 from darts.is_hot_dog.is_hot_dog import is_hot
+# from game.image_transform import process_image
 import uuid
 
 
@@ -11,13 +12,13 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 yolos_dir = os.path.join(script_dir, 'yolos')
 sys.path.append(yolos_dir)
 
-app = Flask(__name__, static_folder=os.path.join(script_dir, '../static'))
+app = Flask(__name__, static_folder=os.path.join(script_dir, '../static'), template_folder=os.path.join(script_dir, './templates'))
 
 UPLOAD_FOLDER = os.path.join(script_dir, '../static/uploads/')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 15 * 1024 * 1024     # 15MB
 
-@app.route('/process_image', methods=['POST'])
+@app.route('/process_image', methods=['POST', 'GET'])
 def game():
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     def allowed_file(filename):
@@ -53,6 +54,9 @@ def game():
             
         else:
             return jsonify({'message': 'Invalid file type'}), 400
+
+    # return render_template('game.html')
+
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -111,7 +115,7 @@ def hot_dog():
         else:
             return jsonify({'message': 'Invalid file type'}), 400
     
-    # return render_template('hot_dog.html')
+#     # return render_template('hot_dog.html')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=False)
