@@ -1172,7 +1172,7 @@ def process_image(img_path, size=(1000, 1000), accuracy=0.05, iterations=5, show
 
     original = Board(img_path)
     board = BoardTransform(original)
-    size = (640, 640)
+    size = (800, 800)
 
     board = initial_prepare(board, size=size, crop_scale=1.3)
 
