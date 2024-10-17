@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, render_template
 from flask_mail import Mail, Message
 import os
 import sys
 from darts.game.image_transform import process_image
 from darts.is_hot_dog.is_hot_dog import is_hot
-# from game.image_transform import process_image
+from darts.gun_violence.gun_map import map
+# from gun_violence.gun_map import map
 import uuid
 
 
@@ -116,6 +117,13 @@ def hot_dog():
             return jsonify({'message': 'Invalid file type'}), 400
     
 #     # return render_template('hot_dog.html')
+
+# @app.route('/gun_violence.html', methods=['GET'])
+@app.route('/gun_map', methods=['GET'])
+def gun_map():
+    graph_json = map()
+    # return render_template('gun_violence.html', graph_json=graph_json)
+    return jsonify(graph_json)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=False)
