@@ -4,7 +4,7 @@ $(document).ready(function() {
         type: 'GET',
         success: function(data) {
             var plot_data = JSON.parse(data);
-            Plotly.newPlot('map', plpot_data);
+            Plotly.newPlot('map', plot_data);
         },
         error: function(error) {
             console.log('Error loading map:', error);
